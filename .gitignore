@@ -45,6 +45,7 @@ Temporary Items
 # Ignore these Unity directories
 Library
 Temp
+Obj
 
 # Ignore the following file extensions
 *.exe
