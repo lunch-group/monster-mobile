@@ -49,6 +49,8 @@
      <Compile Include="Assets\MONSTERS\Teddy\Agent.cs" />
      <Compile Include="Assets\MONSTERS\Teddy\Locomotion\Scripts\Locomotion.cs" />
      <Compile Include="Assets\Scripts\Menu.cs" />
+     <Compile Include="Assets\Scripts\Player.cs" />
+     <Compile Include="Assets\Scripts\Spawnpoint.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>D:/Program Files/Editor/Data/UnityExtensions/Unity/GUISystem/4.6.1/UnityEngine.UI.dll</HintPath>
  </Reference>
