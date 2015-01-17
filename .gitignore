@@ -46,8 +46,10 @@ Temporary Items
 Library
 Temp
 Obj
+*_Data
 
 # Ignore the following file extensions
 *.exe
 *.vcproject
 *.sln
+*.zip
