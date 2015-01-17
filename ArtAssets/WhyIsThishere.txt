@@ -1,0 +1,1 @@
+This folder will hold all source art assets, separate from the assets in the project
