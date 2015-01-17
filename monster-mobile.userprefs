@@ -1,23 +1,18 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\SniperTower.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\MenuInGame.cs">
     <Files>
-      <File FileName="Assets\Scripts\Spawnpoint.cs" Line="34" Column="2" />
-      <File FileName="Assets\Scripts\Menu.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Player.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Teddy.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Defensepoint.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Bullet.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\SniperTower.cs" Line="7" Column="17" />
-      <File FileName="Assets\Scripts\Buildingpoint.cs" Line="15" Column="1" />
-      <File FileName="Assets\RaycastTest.cs" Line="6" Column="13" />
+      <File FileName="Assets\Scripts\SniperTower.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Buildingpoint.cs" Line="59" Column="2" />
+      <File FileName="Assets\Scripts\MenuInGame.cs" Line="68" Column="4" />
+      <File FileName="Assets\Scripts\Spawnpoint.cs" Line="43" Column="54" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
-      <Breakpoint file="D:\dev\unity\projects\monster-mobile\Assets\Scripts\Buildingpoint.cs" line="51" />
-      <Breakpoint file="D:\dev\unity\projects\monster-mobile\Assets\Scripts\Buildingpoint.cs" line="57" />
-      <Breakpoint file="D:\dev\unity\projects\monster-mobile\Assets\Scripts\Buildingpoint.cs" line="17" />
+      <Breakpoint file="D:\dev\unity\projects\monster-mobile\Assets\Scripts\Spawnpoint.cs" line="70" />
+      <Breakpoint file="D:\dev\unity\projects\monster-mobile\Assets\Scripts\Spawnpoint.cs" line="63" />
+      <Breakpoint file="D:\dev\unity\projects\monster-mobile\Assets\Scripts\Spawnpoint.cs" line="58" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
