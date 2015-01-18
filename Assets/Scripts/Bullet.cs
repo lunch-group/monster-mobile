@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class Bullet : MonoBehaviour
@@ -26,7 +26,7 @@ public class Bullet : MonoBehaviour
 		if (transform.position.Equals(destination.position))
 		{
 			// decrease teddy health
-			Teddy t = destination.GetComponent<Teddy>();
+			Enemy t = destination.GetComponent<Enemy>();
 			t.health = t.health - 1;
 			
 			// call Teddy's onDead if died

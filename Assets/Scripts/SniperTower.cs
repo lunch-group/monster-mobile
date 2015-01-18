@@ -19,13 +19,13 @@ public class SniperTower : MonoBehaviour
 	// rotation 
 	public float rotationSpeed = 2.0f;
 	
-	Teddy findClosestTarget()
+	Enemy findClosestTarget()
 	{
-		Teddy closest = null;
+		Enemy closest = null;
 		Vector3 pos = transform.position;
 		
 		// find all teddys
-		Teddy[] teddys = (Teddy[])FindObjectsOfType(typeof(Teddy));
+		Enemy[] teddys = (Enemy[])FindObjectsOfType(typeof(Enemy));
 		if (teddys != null)
 		{
 			if (teddys.Length > 0)
@@ -54,7 +54,7 @@ public class SniperTower : MonoBehaviour
 		if (timeLeft <= 0.0f)
 		{
 			// find the closest target (if any)
-			Teddy target = findClosestTarget();
+			Enemy target = findClosestTarget();
 			if (target != null)
 			{        
 				// is it close enough?

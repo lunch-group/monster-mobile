@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Teddy : MonoBehaviour
+public class Enemy : MonoBehaviour
 {
 	public int health = 10;
 	
