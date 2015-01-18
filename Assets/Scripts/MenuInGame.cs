@@ -26,8 +26,7 @@ public class MenuInGame : MonoBehaviour
 
 
 	void Start ()
-	{
-	
+	{	
 	}
 	
 	void Update ()
@@ -50,21 +49,21 @@ public class MenuInGame : MonoBehaviour
 		{
 			case INGAME_STATE.INGAME_STATE_PREPARE:
 			{
-			mButtonText = "PREPARE > DEFEND";
+				mButtonText = "PREPARE > DEFEND";
 			}
 				break;
 			
 			case INGAME_STATE.INGAME_STATE_DEFEND:
 			{
-			mButtonText = "DEFEND > RETREAT";
+				mButtonText = "DEFEND > RETREAT";				
 			}
 				break;
 			
 			case INGAME_STATE.INGAME_STATE_OUTCOME:
 			{
-			mButtonText = "OUTCOME > PREPARE";
-				break;
+				mButtonText = "OUTCOME > PREPARE";
 			}
+				break;
 		}
 	}
 
@@ -73,9 +72,17 @@ public class MenuInGame : MonoBehaviour
 		switch (mState)
 		{
 			case INGAME_STATE.INGAME_STATE_PREPARE:
+			{
 				Debug.Log ("INGAMEMENU: State changed from PREPARE to DEFEND");
 				mState = INGAME_STATE.INGAME_STATE_DEFEND;
-				break;
+
+				GameObject[] spawnList = GameObject.FindGameObjectsWithTag("Respawn");
+				for (int i = 0; i < spawnList.Length; ++i)
+				{
+					spawnList[i].GetComponent<Spawnpoint>().Reset();
+	            }
+			}
+            break;
 			case INGAME_STATE.INGAME_STATE_DEFEND:
 				Debug.Log ("INGAMEMENU: State changed from DEFEND to PREPARE");
 				mState = INGAME_STATE.INGAME_STATE_PREPARE;

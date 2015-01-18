@@ -1,19 +1,14 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\MenuInGame.cs">
     <Files>
-      <File FileName="Assets\Scripts\SniperTower.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Buildingpoint.cs" Line="59" Column="2" />
-      <File FileName="Assets\Scripts\MenuInGame.cs" Line="68" Column="4" />
-      <File FileName="Assets\Scripts\Spawnpoint.cs" Line="43" Column="54" />
+      <File FileName="Assets\Scripts\Defensepoint.cs" Line="6" Column="29" />
+      <File FileName="Assets\Scripts\MenuInGame.cs" Line="31" Column="2" />
+      <File FileName="Assets\Scripts\Spawnpoint.cs" Line="81" Column="5" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore>
-      <Breakpoint file="D:\dev\unity\projects\monster-mobile\Assets\Scripts\Spawnpoint.cs" line="70" />
-      <Breakpoint file="D:\dev\unity\projects\monster-mobile\Assets\Scripts\Spawnpoint.cs" line="63" />
-      <Breakpoint file="D:\dev\unity\projects\monster-mobile\Assets\Scripts\Spawnpoint.cs" line="58" />
-    </BreakpointStore>
+    <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>

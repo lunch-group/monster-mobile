@@ -20,19 +20,28 @@ public class Spawnpoint : MonoBehaviour
 	public Transform destination = null;
 
 	public GameObject inGameMenu = null; // for game state, etc.
-	private MenuInGame menuObject = null;
+	private MenuInGame mMenuObject = null;
+
+	public GameObject notificationMenu = null;
+	private MenuNotifications mMenuNotifications = null;
+
+	private int mDay = 0;
 
 	void Start()
 	{
 		if (inGameMenu != null)
 		{
-			menuObject = inGameMenu.GetComponent<MenuInGame>();
+			mMenuObject = inGameMenu.GetComponent<MenuInGame>();
+		}
+		if (notificationMenu != null)
+		{
+			mMenuNotifications = notificationMenu.GetComponent<MenuNotifications>();
 		}
 
 		Reset ();
 	}
 
-	void Reset()
+	public void Reset()
 	{
 		mWaveTimeLeft = waveLength / (float)spawnsPerWave;
 		mTimeLeftBetweenWaves = timeBetweenWaves;
@@ -43,45 +52,54 @@ public class Spawnpoint : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-		// Check for state changes
-		if (menuObject.GetState() != menuObject.GetLastState())
-		{
-			Debug.Log ("SPAWNPOINT: State changed... Reset.");
-			Reset ();
-		}
-
-		if (menuObject.GetState() == MenuInGame.INGAME_STATE.INGAME_STATE_DEFEND)
+		if (mMenuObject.GetState() == MenuInGame.INGAME_STATE.INGAME_STATE_DEFEND)
 		{
 			// Check if the day is done.
 			if (mWavesDone >= numWaves)
 			{
-				GameObject[] enemyList = GameObject.FindGameObjectsWithTag("Enemy");
-				if (enemyList.Length == 0)
+				if (AreAllEnemiesDead())
 				{
+					mDay++;
+					string s = "Day " + mDay + " complete!";
+					mMenuNotifications.SetText(s);
 					Debug.Log ("SPAWNPOINT: Day complete.");
-					menuObject.SetDayComplete();
-					mNumSpawned = 0;
+
+					mMenuObject.SetDayComplete();
+
+					// Reset for the next day.
+					Reset ();
 				}
 			}
 			// Count down to the next wave.
 			else if (mTimeLeftBetweenWaves > 0.0f)
 			{
 				mTimeLeftBetweenWaves -= Time.deltaTime;
+
+				string s = "Next Wave: " + (int)mTimeLeftBetweenWaves + "s";
+				mMenuNotifications.SetText(s);
 			}
 			// Check if the current wave is done.
 			else if (mNumSpawned >= spawnsPerWave)
 			{
-				mWavesDone++;
-				Debug.Log ("SPAWNPOINT: Wave " + mWavesDone + " complete.");
+				if (AreAllEnemiesDead())
+				{
+					mWavesDone++;
 
-				// Reset data for the next wave.
-				mWaveTimeLeft = waveLength / (float)spawnsPerWave;
-				mTimeLeftBetweenWaves = timeBetweenWaves;
-				mNumSpawned = 0;
+					string s = "Wave " + mWavesDone + " complete!";
+					mMenuNotifications.SetText(s);
+					Debug.Log ("SPAWNPOINT: Wave " + mWavesDone + " complete.");
+
+					// Reset data for the next wave.
+					mWaveTimeLeft = waveLength / (float)spawnsPerWave;
+					mTimeLeftBetweenWaves = timeBetweenWaves;
+					mNumSpawned = 0;
+				}
 			}
 			// Count down to the next spawn.
 			else
 			{
+				mMenuNotifications.SetText("");
+
 				mWaveTimeLeft -= Time.deltaTime;
 				if (mWaveTimeLeft <= 0.0f)
 				{
@@ -97,5 +115,16 @@ public class Spawnpoint : MonoBehaviour
 				}
 			}
 		}
+	}
+
+	bool AreAllEnemiesDead()
+	{
+		bool result = false;
+		GameObject[] enemyList = GameObject.FindGameObjectsWithTag("Enemy");
+		if (enemyList.Length == 0)
+        {
+			result = true;
+		}
+		return result;
 	}
 }
