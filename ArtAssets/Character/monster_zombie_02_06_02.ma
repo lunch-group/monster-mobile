@@ -1,6 +1,6 @@
 //Maya ASCII 2011 scene
-//Name: monster_zombie.ma
-//Last modified: Sat, Jan 17, 2015 03:21:06 PM
+//Name: monster_zombie_02_06_02.ma
+//Last modified: Sat, Jan 17, 2015 06:38:08 PM
 //Codeset: 1252
 requires maya "2011";
 currentUnit -l foot -a degree -t film;
@@ -11,15 +11,15 @@ fileInfo "cutIdentifier" "201003190014-771504";
 fileInfo "osv" "Microsoft Windows 7 Home Premium Edition, 64-bit Windows 7 Service Pack 1 (Build 7601)\n";
 createNode transform -s -n "persp";
 	setAttr ".v" no;
-	setAttr ".t" -type "double3" 7.5333192177332586 10.890386383517074 28.903818611150182 ;
-	setAttr ".r" -type "double3" -12.338352727862274 736.59999999998399 2.07429807966697e-016 ;
+	setAttr ".t" -type "double3" -6.5396356124171673 5.4772942944419851 11.645716122398664 ;
+	setAttr ".r" -type "double3" -11.13835272786312 688.59999999993556 0 ;
 createNode camera -s -n "perspShape" -p "persp";
 	setAttr -k off ".v" no;
 	setAttr ".fl" 34.999999999999986;
 	setAttr ".ncp" 0.0032808398950131233;
 	setAttr ".fcp" 328.08398950131232;
 	setAttr ".fd" 0.16404199475065617;
-	setAttr ".coi" 30.876579374421819;
+	setAttr ".coi" 13.059448553327497;
 	setAttr ".ow" 0.32808398950131235;
 	setAttr ".imn" -type "string" "persp";
 	setAttr ".den" -type "string" "persp_depth";
@@ -76,10 +76,10 @@ createNode camera -s -n "sideShape" -p "side";
 	setAttr ".man" -type "string" "side_mask";
 	setAttr ".hc" -type "string" "viewSet -s %camera";
 	setAttr ".o" yes;
-createNode transform -n "monster_zombie_mesh";
+createNode transform -n "monster_zombie";
 	setAttr ".t" -type "double3" 0 0.075705424456836617 0 ;
 	setAttr ".s" -type "double3" 37.844142571111959 37.844142571111959 37.844142571111959 ;
-createNode mesh -n "monster_zombie_meshShape" -p "monster_zombie_mesh";
+createNode mesh -n "monster_zombieShape" -p "monster_zombie";
 	setAttr -k off ".v";
 	setAttr -s 2 ".iog[0].og";
 	setAttr ".iog[0].og[0].gcl" -type "componentList" 2 "f[0:11]" "f[18:35]";
@@ -233,7 +233,7 @@ createNode mesh -n "monster_zombie_meshShape" -p "monster_zombie_mesh";
 	setAttr ".cvd" -type "dataPolyComponent" Index_Data Vertex 0 ;
 	setAttr ".hfd" -type "dataPolyComponent" Index_Data Face 0 ;
 	setAttr ".dr" 1;
-createNode mesh -n "monster_zombie_meshShape1Orig" -p "monster_zombie_mesh";
+createNode mesh -n "monster_zombieShape1Orig" -p "monster_zombie";
 	setAttr -k off ".v";
 	setAttr ".io" yes;
 	setAttr ".vir" yes;
@@ -480,10 +480,10 @@ select -ne :hardwareRenderGlobals;
 select -ne :defaultHardwareRenderGlobals;
 	setAttr ".fn" -type "string" "im";
 	setAttr ".res" -type "string" "ntsc_4d 646 485 1.333";
-connectAttr "groupId15.id" "monster_zombie_meshShape.iog.og[0].gid";
-connectAttr "lambert4SG.mwc" "monster_zombie_meshShape.iog.og[0].gco";
-connectAttr "groupId16.id" "monster_zombie_meshShape.iog.og[1].gid";
-connectAttr "lambert3SG.mwc" "monster_zombie_meshShape.iog.og[1].gco";
+connectAttr "groupId15.id" "monster_zombieShape.iog.og[0].gid";
+connectAttr "lambert4SG.mwc" "monster_zombieShape.iog.og[0].gco";
+connectAttr "groupId16.id" "monster_zombieShape.iog.og[1].gid";
+connectAttr "lambert3SG.mwc" "monster_zombieShape.iog.og[1].gco";
 relationship "link" ":lightLinker1" ":initialShadingGroup.message" ":defaultLightSet.message";
 relationship "link" ":lightLinker1" ":initialParticleSE.message" ":defaultLightSet.message";
 relationship "link" ":lightLinker1" "lambert2SG.message" ":defaultLightSet.message";
@@ -500,12 +500,12 @@ connectAttr "lambert2.oc" "lambert2SG.ss";
 connectAttr "lambert2SG.msg" "materialInfo1.sg";
 connectAttr "lambert2.msg" "materialInfo1.m";
 connectAttr "lambert3.oc" "lambert3SG.ss";
-connectAttr "monster_zombie_meshShape.iog.og[1]" "lambert3SG.dsm" -na;
+connectAttr "monster_zombieShape.iog.og[1]" "lambert3SG.dsm" -na;
 connectAttr "groupId16.msg" "lambert3SG.gn" -na;
 connectAttr "lambert3SG.msg" "materialInfo2.sg";
 connectAttr "lambert3.msg" "materialInfo2.m";
 connectAttr "lambert4.oc" "lambert4SG.ss";
-connectAttr "monster_zombie_meshShape.iog.og[0]" "lambert4SG.dsm" -na;
+connectAttr "monster_zombieShape.iog.og[0]" "lambert4SG.dsm" -na;
 connectAttr "groupId15.msg" "lambert4SG.gn" -na;
 connectAttr "lambert4SG.msg" "materialInfo3.sg";
 connectAttr "lambert4.msg" "materialInfo3.m";
@@ -515,4 +515,4 @@ connectAttr "lambert4SG.pa" ":renderPartition.st" -na;
 connectAttr "lambert2.msg" ":defaultShaderList1.s" -na;
 connectAttr "lambert3.msg" ":defaultShaderList1.s" -na;
 connectAttr "lambert4.msg" ":defaultShaderList1.s" -na;
-// End of monster_zombie.ma
+// End of monster_zombie_02_06_02.ma
