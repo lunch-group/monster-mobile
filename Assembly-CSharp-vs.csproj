@@ -48,17 +48,23 @@
   <ItemGroup>
      <Compile Include="Assets\MONSTERS\Teddy\Agent.cs" />
      <Compile Include="Assets\MONSTERS\Teddy\Locomotion\Scripts\Locomotion.cs" />
+     <Compile Include="Assets\Scripts\Buildable.cs" />
      <Compile Include="Assets\Scripts\Buildingpoint.cs" />
-     <Compile Include="Assets\Scripts\Bullet.cs" />
+     <Compile Include="Assets\Scripts\Buyable.cs" />
+     <Compile Include="Assets\Scripts\Clickable.cs" />
      <Compile Include="Assets\Scripts\Defensepoint.cs" />
      <Compile Include="Assets\Scripts\Enemy.cs" />
      <Compile Include="Assets\Scripts\Menu.cs" />
      <Compile Include="Assets\Scripts\MenuInGame.cs" />
      <Compile Include="Assets\Scripts\MenuNotifications.cs" />
      <Compile Include="Assets\Scripts\Player.cs" />
+     <Compile Include="Assets\Scripts\Projectile.cs" />
      <Compile Include="Assets\Scripts\RaycastTest.cs" />
      <Compile Include="Assets\Scripts\SniperTower.cs" />
      <Compile Include="Assets\Scripts\Spawnpoint.cs" />
+     <Compile Include="Assets\Scripts\Survivor.cs" />
+     <Compile Include="Assets\Scripts\SurvivorHunter.cs" />
+     <None Include="Assets\_Materials\wireframe.shader" />
  <Reference Include="UnityEngine.UI">
  <HintPath>D:/Program Files/Editor/Data/UnityExtensions/Unity/GUISystem/4.6.1/UnityEngine.UI.dll</HintPath>
  </Reference>

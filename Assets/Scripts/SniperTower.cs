@@ -3,78 +3,69 @@ using System.Collections;
 
 public class SniperTower : MonoBehaviour
 {
-	// bullet
-	public Bullet bulletPrefab = null;
+	public Projectile ProjectilePrefab = null;
+	public float ShotInterval = 2.0f;
+	public float Range = 10.0f;
+
+	private float mTimeLeftToShoot = 0.0f;
+
 	
-	// interval
-	public float interval = 2.0f;
-	float timeLeft = 0.0f;
-	
-	// attack range
-	public float range = 10.0f;
-	
-	// price to build the tower
-	public int buildPrice = 1;
-	
-	// rotation 
-	public float rotationSpeed = 2.0f;
-	
-	Enemy findClosestTarget()
+	GameObject FindClosestTargetInRange()
 	{
-		Enemy closest = null;
-		Vector3 pos = transform.position;
+		GameObject closestTarget = null;
 		
-		// find all teddys
-		Enemy[] teddys = (Enemy[])FindObjectsOfType(typeof(Enemy));
-		if (teddys != null)
+		GameObject[] enemyList = GameObject.FindGameObjectsWithTag("Enemy");
+		if (enemyList.Length > 0)
 		{
-			if (teddys.Length > 0)
+			closestTarget = enemyList[0];
+			for (int i = 1; i < enemyList.Length; ++i)
 			{
-				closest = teddys[0];
-				for (int i = 1; i < teddys.Length; ++i)
+				float cur = Vector3.Distance(transform.position, enemyList[i].transform.position);
+				float old = Vector3.Distance(transform.position, closestTarget.transform.position);
+				
+				if (cur < old)
 				{
-					float cur = Vector3.Distance(pos, teddys[i].transform.position);
-					float old = Vector3.Distance(pos, closest.transform.position);
-					
-					if (cur < old)
-					{
-						closest = teddys[i];
-					}
+					closestTarget = enemyList[i];
 				}
 			}
 		}
 		
-		return closest;
+		return closestTarget;
 	}
 	
 	void Update()
 	{
-		// shoot next bullet?
-		timeLeft -= Time.deltaTime;
-		if (timeLeft <= 0.0f)
+		Buildable buildComp = GetComponentInParent<Buildable>();
+		if (buildComp.IsBuilding())
 		{
-			// find the closest target (if any)
-			Enemy target = findClosestTarget();
-			if (target != null)
-			{        
-				// is it close enough?
-				if (Vector3.Distance(transform.position, target.transform.position) <= range)
-				{
-					// spawn bullet
-					GameObject g = (GameObject)Instantiate(bulletPrefab.gameObject, transform.position, Quaternion.identity);
-					// get access to bullet component
-					Bullet b = g.GetComponent<Bullet>();
-					// set destination        
-					b.setDestination(target.transform);
-					
-					// reset time
-					timeLeft = interval;
+			buildComp.ShowGui(true);
+		}
+		else if (buildComp.IsDone())
+		{
+			buildComp.ShowGui(false);
+
+			mTimeLeftToShoot -= Time.deltaTime;
+			if (mTimeLeftToShoot <= 0.0f)
+			{
+				// Find the closest target (if any).
+				GameObject target = FindClosestTargetInRange();
+				if (target != null)
+				{        
+					// Is it close enough?
+					if (Vector3.Distance(transform.position, target.transform.position) <= Range)
+					{
+						// Spawn a projectile.
+						GameObject g = (GameObject)Instantiate(ProjectilePrefab.gameObject, transform.position, Quaternion.identity);
+						// Get the projectile component of the new object.
+						Projectile p = g.GetComponent<Projectile>();
+						// Set destination of the projectile.
+						p.SetDestination(target.transform);
+						
+						// Reset time to next shot.
+						mTimeLeftToShoot = ShotInterval;
+					}
 				}
 			}
 		}
-		
-		// always rotate a bit (animation)
-		Vector3 rot = transform.eulerAngles;
-		transform.rotation = Quaternion.Euler(rot.x, rot.y + Time.deltaTime * rotationSpeed, rot.z);
 	}
 }
