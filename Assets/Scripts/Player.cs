@@ -12,6 +12,6 @@ public class Player : MonoBehaviour
 		GUI.skin = skin;
 		
 		// draw gold
-		GUI.Label(new Rect(0, 0, 400, 200), "Gold: " + gold);
+		GUI.Label(new Rect(0, Screen.height - 60, 100, 60), "Gold: " + gold);
 	}
 }

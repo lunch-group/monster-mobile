@@ -12,7 +12,7 @@ public class Defensepoint : MonoBehaviour
 		GUI.skin = skin;
 		
 		// draw castle health
-		GUI.Label(new Rect(0, 40, 400, 200), "Castle Health: " + health);
+		GUI.Label(new Rect(0, Screen.height - 30, 100, 30), "Castle Health: " + health);
 	}
 
 	void Update()

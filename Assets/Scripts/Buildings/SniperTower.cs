@@ -36,14 +36,8 @@ public class SniperTower : MonoBehaviour
 	void Update()
 	{
 		Buildable buildComp = GetComponentInParent<Buildable>();
-		if (buildComp.IsBuilding())
+		if ((buildComp == null) || buildComp.IsDone())
 		{
-			buildComp.ShowGui(true);
-		}
-		else if (buildComp.IsDone())
-		{
-			buildComp.ShowGui(false);
-
 			mTimeLeftToShoot -= Time.deltaTime;
 			if (mTimeLeftToShoot <= 0.0f)
 			{
@@ -66,6 +60,10 @@ public class SniperTower : MonoBehaviour
 					}
 				}
 			}
+		}
+		else if (buildComp.IsBuilding())
+		{
+			buildComp.ShowGui(true);
 		}
 	}
 }
