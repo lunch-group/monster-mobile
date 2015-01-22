@@ -39,8 +39,20 @@ public class Survivor : MonoBehaviour
 	private bool mIsPendingBuild = false;
 	private Buildingpoint mBuildingPoint = null;
 
+	private PlayerManager mPlayerManager = null;
+
+
 	virtual protected void Start ()
 	{
+		GameObject[] managers = GameObject.FindGameObjectsWithTag("Manager");
+		foreach (GameObject go in managers)
+		{
+			if (go.GetComponent<PlayerManager>())
+			{
+				mPlayerManager = go.GetComponent<PlayerManager>();
+			}
+		}
+
 		if (instructionMenu != null)
 		{
 			mInstructionsMenu = instructionMenu.GetComponent<MenuNotifications>();
@@ -73,16 +85,28 @@ public class Survivor : MonoBehaviour
 			{
 				if (Input.GetMouseButtonDown(0))
 				{
-					Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-					RaycastHit hit;
-					if (Physics.Raycast(ray, out hit))
+					// Don't count clicks on the ExitButton.
+					ExitButton eb = GameObject.Find("ExitButton").GetComponent<ExitButton>();
+					if (Input.mousePosition.x > eb.size && Input.mousePosition.y > eb.size)
 					{
-						mDestination = hit.point;
-						mDestination.y = transform.position.y;
-						Debug.Log("SURVIVOR: MOVE: Set destination to (" + mDestination + ")");
+						Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+						RaycastHit hit;
+						if (Physics.Raycast(ray, out hit))
+						{
+							mDestination = hit.point;
+							mDestination.y = transform.position.y;
+							Debug.Log("SURVIVOR: MOVE: Set destination to (" + mDestination + ")");
 
-						mIsPendingMove = false;
-						mIsMoving = true;
+							mIsPendingMove = false;
+							mIsMoving = true;
+
+							// Set this player as inactive to prevent being able to build while moving.
+							mPlayerManager.SetActivePlayer(null);
+						}
+					}
+					else
+					{
+						Debug.Log("player move clicked on X");
 					}
 				}
 				else if (Input.GetMouseButtonDown(1))
@@ -117,6 +141,8 @@ public class Survivor : MonoBehaviour
 					mDestination.x += (transform.position.x > mDestination.x) ? 1.0f : -1.0f;
 					mDestination.y = transform.position.y;
 					mDestination.z += (transform.position.z > mDestination.z) ? 1.0f : -1.0f;
+
+					mPlayerManager.SetActivePlayer(null);
 				}
 			}
 			else
@@ -176,6 +202,12 @@ public class Survivor : MonoBehaviour
 
 	virtual protected void OnGUI()
 	{
+		// Don't allow updates in certain states.
+		if (mState == SurvivorState.BUILD)
+		{
+			return;
+		}
+
 		// Check all body parts for a Clickable component.
 		Clickable[] clickers = GetComponentsInChildren<Clickable>() as Clickable[];
 		foreach (Clickable c in clickers)
@@ -196,10 +228,27 @@ public class Survivor : MonoBehaviour
 				selection = GUI.SelectionGrid(r, selection, mStateStrings, gridColumns);
 				if (selection >= 0)
 				{
+					mPlayerManager.SetActivePlayer(gameObject);
 					SetState((SurvivorState)selection);
 					c.SetIsClicked(false);
 				}
 			}
+		}
+	}
+
+	void OnUnclicked()
+	{
+		if (mState == SurvivorState.MOVE && mIsPendingMove)
+		{
+			mIsPendingMove = false;
+			SetState(SurvivorState.IDLE);
+			mPlayerManager.SetActivePlayer(null);
+		}
+		if (mState == SurvivorState.BUILD && mIsPendingBuild)
+		{
+			mIsPendingBuild = false;
+			SetState(SurvivorState.IDLE);
+			mPlayerManager.SetActivePlayer(null);
 		}
 	}
 
