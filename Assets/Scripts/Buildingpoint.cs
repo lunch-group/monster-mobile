@@ -65,23 +65,44 @@ public class Buildingpoint : MonoBehaviour
 			}
 			else if (mIsReadyToBuild == false)
 			{
+				GameObject cmgo = GameObject.Find("CommerceManager");
+				CommerceManager cm = cmgo.GetComponent<CommerceManager>();
+
 				// List all prefabs of the chosen type.
 				string[] buildingTypes = mPrefabManager.GetPrefabNamesByType(mPrefabType);
 
+				string[] priceList = new string[buildingTypes.Length];
+				for (int s = 0; s < buildingTypes.Length; ++s)
+				{
+					priceList[s] = buildingTypes[s] + "\nPrice: " + cm.GetPrice(buildingTypes[s].ToString()) + "g";
+				}
+
 				if (buildingTypes != null)
 				{
-					Vector2 rectSize = new Vector2(300, 30);
+					int numColumns = 2;
+					Vector2 rectSize = new Vector2(150 * numColumns, 20 * priceList.Length);
 					Rect r = new Rect(v.x - rectSize.x/2, v.y, rectSize.x, rectSize.y);
 
 					int selection = -1;
-					selection = GUI.SelectionGrid(r, selection, buildingTypes, 2);
+					selection = GUI.SelectionGrid(r, selection, priceList, numColumns);
 					if (selection >= 0)
 					{
-						mIsReadyToBuild = true;
 						mBuildSelection = buildingTypes[selection];
 
-						// Reset the clicked state, to hide this GUI.
-						clickComponent.SetIsClicked(false);
+
+						if (cm.Purchase(mBuildSelection))
+						{
+							Debug.Log ("BUILDPOINT: Building a " + mBuildSelection);
+							mIsReadyToBuild = true;
+
+							// Reset the clicked state, to hide this GUI.
+							clickComponent.SetIsClicked(false);
+                        }
+                        else
+                        {
+                            // Keep the list up to make another selection.
+							mBuildSelection = "";
+						}
 					}
 				}
 				else
@@ -103,60 +124,6 @@ public class Buildingpoint : MonoBehaviour
 		}
 	}
 
-	private void Buy()
-	{
-		Clickable clickComponent = GetComponentInParent<Clickable>();
-		if (clickComponent && clickComponent.IsClicked())
-        {
-			// Get 3d position on screen.
-			Vector3 v = Camera.main.WorldToScreenPoint(transform.position);
-			// Convert to gui coordinates.
-			v = new Vector2(v.x, Screen.height - v.y); 
-
-	        Buyable buyComponent = mBuilding.GetComponent<Buyable>();
-			
-			// Create menu for building.
-			Vector2 rwh = new Vector2(200, 30);
-			Rect r = new Rect(v.x - rwh.x / 2, v.y - rwh.y / 2, rwh.x, rwh.y);
-			Vector2 rwh2 = new Vector2(100, 30);
-			Rect r2 = new Rect(v.x - rwh2.x / 2, v.y + rwh.y / 2, rwh2.x, rwh2.y);
-			
-			if (buyComponent != null)
-			{
-				GUI.contentColor = buyComponent.IsAffordable() ? Color.green : Color.red;
-				if (GUI.Button(r, "Build " + mBuilding.name + "(" + buyComponent.Cost + " gold)"))
-				{
-					mIsReadyToBuild = buyComponent.Purchase();
-				}
-				else
-				{
-					GUI.contentColor = Color.red;
-					if (GUI.Button (r2, "Cancel"))
-					{
-						clickComponent.SetIsClicked(false);
-					}
-				}
-			}
-			else
-			{
-				GUI.contentColor = Color.green;
-				if (GUI.Button(r, "Build " + mBuilding.name + "(" + buyComponent.Cost + " gold)"))
-				{
-					// No buyable component means its free.
-	                mIsReadyToBuild = true;
-	            }
-	            else
-	            {
-	                GUI.contentColor = Color.red;
-	                if (GUI.Button (r2, "Cancel"))
-	                {
-	                    clickComponent.SetIsClicked(false);
-	                }
-	            }
-	        }
-		}
-    }
-    
     public void Build(Transform builder, GameObject objToBuild)
 	{
 		mBuilder = builder;
