@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class Defensepoint : MonoBehaviour
@@ -12,13 +12,13 @@ public class Defensepoint : MonoBehaviour
 		GUI.skin = skin;
 		
 		// draw castle health
-		GUI.Label(new Rect(0, 40, 400, 200), "Castle Health: " + health);
+		GUI.Label(new Rect(0, Screen.height - 30, 100, 30), "Castle Health: " + health);
 	}
 
 	void Update()
 	{
 		// find all teddys
-		Teddy[] teddys = (Teddy[])FindObjectsOfType(typeof(Teddy));
+		Enemy[] teddys = (Enemy[])FindObjectsOfType(typeof(Enemy));
 		if (teddys != null)
 		{
 			// find all teddys that are close to the castle

@@ -47,6 +47,7 @@ Library
 Temp
 Obj
 *_Data
+*.app
 
 # Ignore the following file extensions
 *.exe
