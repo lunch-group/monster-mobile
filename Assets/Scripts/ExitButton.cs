@@ -3,8 +3,9 @@ using System.Collections;
 
 public class ExitButton : MonoBehaviour
 {
-	private bool mShowing;
+	private bool mShowing = true;
 	public void Show(bool s) { mShowing = s; }
+	public int size = 30;
 
 
 	void Start ()
@@ -19,11 +20,17 @@ public class ExitButton : MonoBehaviour
 	{
 		if (mShowing)
 		{
-			Rect r = new Rect(0, 0, 30, 30);
+			Rect r = new Rect(0, 0, size, size);
 			if (GUI.Button(r, "X"))
 			{
-				// Close all GUIs
+				Debug.Log("ExitButton clicked.");
 
+				// Close all clickable GUIs.
+				Clickable[] clickableList = FindObjectsOfType(typeof(Clickable)) as Clickable[];
+				foreach (Clickable c in clickableList)
+				{
+					c.Unclick();
+				}
 			}
 		}
 	}

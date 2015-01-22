@@ -16,6 +16,8 @@ public class Buildable : MonoBehaviour
 
 	public Material BuildingMaterial = null;
 	public Material BuildingMaterialDone = null;
+	public GameObject BuildingParticle = null;
+	private Object mParticle = null;
 
 
 	void Start ()
@@ -23,6 +25,9 @@ public class Buildable : MonoBehaviour
 		mActualTimeToBuild = TimeToBuild;
 
 		Reset ();
+
+		SetMaterial(BuildingMaterial);
+		mParticle = Instantiate(BuildingParticle, transform.position, Quaternion.identity);
 	}
 
 	void Reset ()
@@ -63,11 +68,9 @@ public class Buildable : MonoBehaviour
 				TextMesh tm = GetComponentInChildren<TextMesh>();
 				tm.text = "Building: Done";
 
+				// Remove the effect.
+				Destroy(mParticle);
 				SetMaterial(BuildingMaterialDone);
-			}
-			else
-			{
-				SetMaterial(BuildingMaterial);
 			}
 		}
 		else

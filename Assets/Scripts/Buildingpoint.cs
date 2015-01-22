@@ -35,7 +35,13 @@ public class Buildingpoint : MonoBehaviour
 	{
 		Clickable clickComponent = GetComponentInParent<Clickable>();
 		if (clickComponent && clickComponent.IsClicked())
-		{			
+		{
+			GameObject pm = GameObject.Find("PlayerManager");
+			if (pm.GetComponent<PlayerManager>().GetActivePlayer() == null)
+			{
+				clickComponent.SetIsClicked(false);
+			}
+
 			// Get 3d position on screen.
 			Vector3 v = Camera.main.WorldToScreenPoint(transform.position);
 			// Convert to gui coordinates.
@@ -86,6 +92,14 @@ public class Buildingpoint : MonoBehaviour
 					clickComponent.SetIsClicked(false);
 				}
 			}
+		}
+	}
+
+	void OnUnclicked()
+	{
+		if (!mIsReadyToBuild && mPrefabType != (int)PrefabManager.PrefabType.INVALID)
+		{
+			mPrefabType = (int)PrefabManager.PrefabType.INVALID;
 		}
 	}
 

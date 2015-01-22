@@ -12,6 +12,12 @@ public class Clickable : MonoBehaviour
 	{
 		mIsClicked = c;
 	}
+
+	public void Unclick()
+	{
+		mIsClicked = false;
+		transform.root.SendMessage("OnUnclicked", SendMessageOptions.DontRequireReceiver);
+	}
 	
 	public void OnMouseUpAsButton()
 	{		
@@ -19,10 +25,14 @@ public class Clickable : MonoBehaviour
 		Clickable[] clickableList = FindObjectsOfType(typeof(Clickable)) as Clickable[];
 		foreach (Clickable c in clickableList)
 		{
-			c.SetIsClicked(false);
+			if (c != this)
+			{
+				c.SetIsClicked(false);
+			}
 		}
 
 		mIsClicked = true;
+
 		Debug.Log ("CLICKABLE: Clicked on " + this.name);
 	}
 }
