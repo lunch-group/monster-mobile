@@ -41,6 +41,8 @@ public class Survivor : MonoBehaviour
 
 	private PlayerManager mPlayerManager = null;
 
+	public int AttackRadius = 10;
+
 
 	virtual protected void Start ()
 	{

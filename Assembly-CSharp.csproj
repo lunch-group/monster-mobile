@@ -52,11 +52,11 @@
      <Compile Include="Assets\Scripts\Buildingpoint.cs" />
      <Compile Include="Assets\Scripts\Buildings\SecuritySystem.cs" />
      <Compile Include="Assets\Scripts\Buildings\SniperTower.cs" />
-     <Compile Include="Assets\Scripts\Buyable.cs" />
      <Compile Include="Assets\Scripts\Clickable.cs" />
      <Compile Include="Assets\Scripts\Defensepoint.cs" />
      <Compile Include="Assets\Scripts\Enemy.cs" />
      <Compile Include="Assets\Scripts\ExitButton.cs" />
+     <Compile Include="Assets\Scripts\Managers\CommerceManager.cs" />
      <Compile Include="Assets\Scripts\Managers\PlayerManager.cs" />
      <Compile Include="Assets\Scripts\Managers\PrefabManager.cs" />
      <Compile Include="Assets\Scripts\Menu.cs" />
