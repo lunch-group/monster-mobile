@@ -16,18 +16,19 @@ public class PrefabManager : MonoBehaviour
 		MAX
 	};
 
-	public string BuildingDir = "Buildings";
+	public string BuildingPath = "Buildings";
 	private ArrayList mPrefabNames = new ArrayList();
 
 
 	void Start()
 	{
-		string[] buildingTypes = System.IO.Directory.GetFiles(Application.dataPath + "/Resources/PREFABS/" + BuildingDir, "*.prefab", System.IO.SearchOption.AllDirectories);
-		for (int i = 0; i < buildingTypes.Length; ++i)
+		Object[] buildingObjs = Resources.LoadAll(BuildingPath);
+		string[] buildingNames = new string[buildingObjs.Length];
+		for (int i = 0; i < buildingObjs.Length; ++i)
 		{
-			buildingTypes[i] = System.IO.Path.GetFileNameWithoutExtension(buildingTypes[i]);
+			buildingNames[i] = buildingObjs[i].name;
 		}
-		mPrefabNames.Add(buildingTypes);
+		mPrefabNames.Add(buildingNames);
 	}
 
 	public string[] GetTypeNames()
@@ -89,7 +90,7 @@ public class PrefabManager : MonoBehaviour
 					{
 						case PrefabType.BUILDING:
 							Debug.Log ("PREFABMANAGER: Spawn - " + prefabName);
-							spawned = Instantiate(Resources.Load("PREFABS/" + BuildingDir + "/" + prefabName), pos, rot) as GameObject;
+						spawned = Instantiate(Resources.Load(BuildingPath + "/" + prefabName), pos, rot) as GameObject;
 						break;
 					
 						default:

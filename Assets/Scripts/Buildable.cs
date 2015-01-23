@@ -17,7 +17,7 @@ public class Buildable : MonoBehaviour
 	public Material BuildingMaterial = null;
 	public Material BuildingMaterialDone = null;
 	public GameObject BuildingParticle = null;
-	private Object mParticle = null;
+	//private Object mParticle = null;
 
 
 	void Start ()
@@ -27,7 +27,7 @@ public class Buildable : MonoBehaviour
 		Reset ();
 
 		SetMaterial(BuildingMaterial);
-		mParticle = Instantiate(BuildingParticle, transform.position, Quaternion.identity);
+		//mParticle = Instantiate(BuildingParticle, transform.position, Quaternion.identity);
 	}
 
 	void Reset ()
@@ -69,7 +69,7 @@ public class Buildable : MonoBehaviour
 				tm.text = "Building: Done";
 
 				// Remove the effect.
-				Destroy(mParticle);
+				//Destroy(mParticle);
 				SetMaterial(BuildingMaterialDone);
 			}
 		}
