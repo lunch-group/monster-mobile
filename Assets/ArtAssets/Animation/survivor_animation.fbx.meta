@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: a67ce163efb26e74ba607534a7e38af5
+guid: 38f45950cc44a864685f8d276f777304
 ModelImporter:
   serializedVersion: 16
   fileIDToRecycleName:
@@ -12,16 +12,16 @@ ModelImporter:
     100012: LeftPalm
     100014: LeftShoulder
     100016: LeftToe
-    100018: //RootNode
-    100020: Neck
-    100022: Reference
-    100024: RightFoot
-    100026: RightHand
-    100028: RightLeg
-    100030: RightPalm
-    100032: RightShoulder
-    100034: RightToe
-    100036: survivor
+    100018: Neck
+    100020: Reference
+    100022: RightFoot
+    100024: RightHand
+    100026: RightLeg
+    100028: RightPalm
+    100030: RightShoulder
+    100032: RightToe
+    100034: survivor
+    100036: //RootNode
     400000: Chest
     400002: Head
     400004: Hips
@@ -31,17 +31,23 @@ ModelImporter:
     400012: LeftPalm
     400014: LeftShoulder
     400016: LeftToe
-    400018: //RootNode
-    400020: Neck
-    400022: Reference
-    400024: RightFoot
-    400026: RightHand
-    400028: RightLeg
-    400030: RightPalm
-    400032: RightShoulder
-    400034: RightToe
-    400036: survivor
+    400018: Neck
+    400020: Reference
+    400022: RightFoot
+    400024: RightHand
+    400026: RightLeg
+    400028: RightPalm
+    400030: RightShoulder
+    400032: RightToe
+    400034: survivor
+    400036: //RootNode
     4300000: survivor
+    7400000: survivor_idle
+    7400002: survivor_walk
+    7400004: survivor_building
+    7400006: survivor_trap
+    7400008: monster_walk
+    7400010: monster_idle
     9500000: //RootNode
     13700000: survivor
   materials:
