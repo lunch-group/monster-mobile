@@ -54,3 +54,8 @@ Obj
 *.vcproject
 *.sln
 *.zip
+*.csproj
+*.sln
+*.userprefs
+*.pdb
+*.suo
