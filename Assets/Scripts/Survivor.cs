@@ -42,6 +42,9 @@ public class Survivor : MonoBehaviour
 	private PlayerManager mPlayerManager = null;
 
 	public int AttackRadius = 10;
+    
+    [Tooltip("List of building types this player can build.")]
+    public GameObject[] Buildables;
 
 
 	virtual protected void Start ()
@@ -136,7 +139,8 @@ public class Survivor : MonoBehaviour
 				if (bpsReady.Count > 0)
 				{
 					mBuildingPoint = (bpsReady[0] as GameObject).GetComponent<Buildingpoint>();
-					mIsPendingBuild = false;
+					mBuildingPoint.SetPendingBuild();
+                    mIsPendingBuild = false;
 					mDestination = mBuildingPoint.transform.position;
 
 					// Offset to the nearest corner of the object.
