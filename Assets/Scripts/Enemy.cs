@@ -21,10 +21,31 @@ public class Enemy : MonoBehaviour
 		}
 		else
 		{
+			// Display health bar so it always faces the camera
 			TextMesh tm = GetComponentInChildren<TextMesh>();
 			tm.text = new string('-', mHealth);
-			// Adjust health bar so it always faces the camera
 			tm.transform.forward = Camera.main.transform.forward;
+
+			Moveable mc = GetComponent<Moveable>();
+			if (mc != null)
+			{
+				if (mc.IsAtTarget)
+				{
+					Explodable ec = GetComponent<Explodable>();
+					if (ec != null)
+					{
+						GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+						foreach (GameObject pgo in players)
+						{
+							if (pgo.transform == mc.TargetTransform)
+							{
+								// Commit suicide
+								OnDeath();
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 
@@ -36,7 +57,13 @@ public class Enemy : MonoBehaviour
 	public void OnDeath()
 	{
 		Player.gold = Player.gold + Gold;
-		
+
+		Explodable ec = GetComponent<Explodable>();
+		if (ec != null)
+		{
+			ec.PlayEffect();
+		}
+
 		Destroy(gameObject); 
 	}
 }
