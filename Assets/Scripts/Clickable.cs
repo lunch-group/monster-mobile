@@ -16,6 +16,7 @@ public class Clickable : MonoBehaviour
 	public void Unclick()
 	{
 		mIsClicked = false;
+        transform.SendMessage("OnUnclicked", SendMessageOptions.DontRequireReceiver);
 		transform.root.SendMessage("OnUnclicked", SendMessageOptions.DontRequireReceiver);
 	}
 	

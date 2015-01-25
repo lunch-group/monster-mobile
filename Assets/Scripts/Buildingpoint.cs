@@ -7,6 +7,12 @@ public class Buildingpoint : MonoBehaviour
 	private GameObject mBuilding = null;
 	private bool mIsReadyToBuild = false;
 	public bool IsReadyToBuild() { return mIsReadyToBuild; }
+    private bool mIsPendingBuild = false;
+    public void SetPendingBuild()
+    {
+        mIsReadyToBuild = false;
+        mIsPendingBuild = true;
+    }
 	
 	private Transform mBuilder = null;
 
@@ -36,6 +42,7 @@ public class Buildingpoint : MonoBehaviour
 		Clickable clickComponent = GetComponentInParent<Clickable>();
 		if (clickComponent && clickComponent.IsClicked())
 		{
+			// If there is no active player, don't allow this to be built.
 			GameObject pm = GameObject.Find("PlayerManager");
 			if (pm.GetComponent<PlayerManager>().GetActivePlayer() == null)
 			{
@@ -63,7 +70,7 @@ public class Buildingpoint : MonoBehaviour
 					mPrefabType = selection;
                 }
 			}
-			else if (mIsReadyToBuild == false)
+			else if (mIsReadyToBuild == false && mIsPendingBuild == false)
 			{
 				GameObject cmgo = GameObject.Find("CommerceManager");
 				CommerceManager cm = cmgo.GetComponent<CommerceManager>();
@@ -74,10 +81,29 @@ public class Buildingpoint : MonoBehaviour
 				string[] priceList = new string[buildingTypes.Length];
 				for (int s = 0; s < buildingTypes.Length; ++s)
 				{
-					priceList[s] = buildingTypes[s] + "\nPrice: " + cm.GetPrice(buildingTypes[s].ToString()) + "g";
+                    // Check if this player type is allowed to build this thing.
+                    bool playerCanBuildThis = false;
+                    Survivor playerComp = pm.GetComponent<PlayerManager>().GetActivePlayer().GetComponent<Survivor>();
+                    foreach (GameObject bgo in playerComp.Buildables)
+                    {
+                        if (bgo.name.Equals(buildingTypes[s]))
+                        {
+                            playerCanBuildThis = true;
+                            break;
+                        }
+                    }
+                    
+                    if (playerCanBuildThis)
+                    {
+                        priceList[s] = buildingTypes[s] + "\nPrice: " + cm.GetPrice(buildingTypes[s].ToString()) + "g";
+                    }
+                    else
+                    {
+                        priceList[s] = buildingTypes[s] + "\nUNAVAILABLE";
+                    }
 				}
-
-				if (buildingTypes != null)
+                
+				if (buildingTypes.Length > 0)
 				{
 					int numColumns = 2;
 					Vector2 rectSize = new Vector2(150 * numColumns, 20 * priceList.Length);
@@ -87,22 +113,29 @@ public class Buildingpoint : MonoBehaviour
 					selection = GUI.SelectionGrid(r, selection, priceList, numColumns);
 					if (selection >= 0)
 					{
-						mBuildSelection = buildingTypes[selection];
-
-
-						if (cm.Purchase(mBuildSelection))
+                        if (priceList[selection].Contains("Price:"))
 						{
-							Debug.Log ("BUILDPOINT: Building a " + mBuildSelection);
-							mIsReadyToBuild = true;
+                            mBuildSelection = buildingTypes[selection];
+    						if (cm.Purchase(mBuildSelection))
+    						{
+    							Debug.Log ("BUILDPOINT: Building a " + mBuildSelection);
+    							mIsReadyToBuild = true;
 
-							// Reset the clicked state, to hide this GUI.
-							clickComponent.SetIsClicked(false);
+    							// Reset the clicked state, to hide this GUI.
+    							clickComponent.SetIsClicked(false);
+                            }
+                            else
+                            {
+                                GameObject instructionUI = GameObject.Find("Instructions");
+                                if (instructionUI != null)
+                                {
+                                    instructionUI.GetComponent<MenuNotifications>().SetText("Could not afford building.");
+                                }
+                                
+                                // Keep the list up to make another selection.
+    							mBuildSelection = "";
+    						}
                         }
-                        else
-                        {
-                            // Keep the list up to make another selection.
-							mBuildSelection = "";
-						}
 					}
 				}
 				else
@@ -127,7 +160,7 @@ public class Buildingpoint : MonoBehaviour
     public void Build(Transform builder, GameObject objToBuild)
 	{
 		mBuilder = builder;
-		mIsReadyToBuild = false;
+		mIsPendingBuild = false;
 
 		// Instantiate the new building.
 		mBuilding = mPrefabManager.Spawn(mBuildSelection, transform.position, Quaternion.identity);
