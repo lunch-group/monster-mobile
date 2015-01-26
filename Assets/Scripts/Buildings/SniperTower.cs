@@ -9,28 +9,10 @@ public class SniperTower : MonoBehaviour
 
 	private float mTimeLeftToShoot = 0.0f;
 
-	
-	GameObject FindClosestTargetInRange()
+
+	void Start()
 	{
-		GameObject closestTarget = null;
-		
-		GameObject[] enemyList = GameObject.FindGameObjectsWithTag("Enemy");
-		if (enemyList.Length > 0)
-		{
-			closestTarget = enemyList[0];
-			for (int i = 1; i < enemyList.Length; ++i)
-			{
-				float cur = Vector3.Distance(transform.position, enemyList[i].transform.position);
-				float old = Vector3.Distance(transform.position, closestTarget.transform.position);
-				
-				if (cur < old)
-				{
-					closestTarget = enemyList[i];
-				}
-			}
-		}
-		
-		return closestTarget;
+		GetComponent<Buildable>().SetTypeName("SecuritySystem");
 	}
 	
 	void Update()
@@ -65,5 +47,28 @@ public class SniperTower : MonoBehaviour
 		{
 			buildComp.ShowGui(true);
 		}
+	}
+
+	GameObject FindClosestTargetInRange()
+	{
+		GameObject closestTarget = null;
+		
+		GameObject[] enemyList = GameObject.FindGameObjectsWithTag("Enemy");
+		if (enemyList.Length > 0)
+		{
+			closestTarget = enemyList[0];
+			for (int i = 1; i < enemyList.Length; ++i)
+			{
+				float cur = Vector3.Distance(transform.position, enemyList[i].transform.position);
+				float old = Vector3.Distance(transform.position, closestTarget.transform.position);
+				
+				if (cur < old)
+				{
+					closestTarget = enemyList[i];
+				}
+			}
+		}
+		
+		return closestTarget;
 	}
 }

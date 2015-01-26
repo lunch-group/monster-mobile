@@ -20,6 +20,8 @@ public class Buildingpoint : MonoBehaviour
 
 	private string mBuildSelection = "";
 
+	private bool mIsClicked = false;
+
 
 	void Start ()
 	{
@@ -39,14 +41,22 @@ public class Buildingpoint : MonoBehaviour
 
 	void OnGUI()
 	{
-		Clickable clickComponent = GetComponentInParent<Clickable>();
-		if (clickComponent && clickComponent.IsClicked())
+		if (mIsClicked)
 		{
-			// If there is no active player, don't allow this to be built.
+			Clickable clickComponent = GetComponentInParent<Clickable>();
+
+			// If there is no active player in the Build state, don't allow this to be built.
 			GameObject pm = GameObject.Find("PlayerManager");
-			if (pm.GetComponent<PlayerManager>().GetActivePlayer() == null)
+			GameObject ap = pm.GetComponent<PlayerManager>().GetActivePlayer();
+			if (ap == null)
 			{
-				clickComponent.SetIsClicked(false);
+				clickComponent.Unclick();
+				return;
+			}
+			else if (ap.GetComponent<Survivor>().GetState() != Survivor.SurvivorState.BUILD)
+			{
+				clickComponent.Unclick();
+                return;
 			}
 
 			// Get 3d position on screen.
@@ -78,33 +88,33 @@ public class Buildingpoint : MonoBehaviour
 				// List all prefabs of the chosen type.
 				string[] buildingTypes = mPrefabManager.GetPrefabNamesByType(mPrefabType);
 
-				string[] priceList = new string[buildingTypes.Length];
-				for (int s = 0; s < buildingTypes.Length; ++s)
+				if ((buildingTypes != null) && (buildingTypes.Length > 0))
 				{
-                    // Check if this player type is allowed to build this thing.
-                    bool playerCanBuildThis = false;
-                    Survivor playerComp = pm.GetComponent<PlayerManager>().GetActivePlayer().GetComponent<Survivor>();
-                    foreach (GameObject bgo in playerComp.Buildables)
-                    {
-                        if (bgo.name.Equals(buildingTypes[s]))
-                        {
-                            playerCanBuildThis = true;
-                            break;
-                        }
-                    }
-                    
-                    if (playerCanBuildThis)
-                    {
-                        priceList[s] = buildingTypes[s] + "\nPrice: " + cm.GetPrice(buildingTypes[s].ToString()) + "g";
-                    }
-                    else
-                    {
-                        priceList[s] = buildingTypes[s] + "\nUNAVAILABLE";
-                    }
-				}
+					string[] priceList = new string[buildingTypes.Length];
+					for (int s = 0; s < buildingTypes.Length; ++s)
+					{
+	                    // Check if this player type is allowed to build this thing.
+	                    bool playerCanBuildThis = false;
+	                    Survivor playerComp = pm.GetComponent<PlayerManager>().GetActivePlayer().GetComponent<Survivor>();
+	                    foreach (GameObject bgo in playerComp.Buildables)
+	                    {
+	                        if (bgo.name.Equals(buildingTypes[s]))
+	                        {
+	                            playerCanBuildThis = true;
+	                            break;
+	                        }
+	                    }
+	                    
+	                    if (playerCanBuildThis)
+	                    {
+	                        priceList[s] = buildingTypes[s] + "\nPrice: " + cm.GetPrice(buildingTypes[s].ToString()) + "g";
+	                    }
+	                    else
+	                    {
+	                        priceList[s] = buildingTypes[s] + "\nUNAVAILABLE";
+	                    }
+					}
                 
-				if (buildingTypes.Length > 0)
-				{
 					int numColumns = 2;
 					Vector2 rectSize = new Vector2(150 * numColumns, 20 * priceList.Length);
 					Rect r = new Rect(v.x - rectSize.x/2, v.y, rectSize.x, rectSize.y);
@@ -122,7 +132,8 @@ public class Buildingpoint : MonoBehaviour
     							mIsReadyToBuild = true;
 
     							// Reset the clicked state, to hide this GUI.
-    							clickComponent.SetIsClicked(false);
+								mIsClicked = false;
+    							clickComponent.IsClicked = false;
                             }
                             else
                             {
@@ -136,21 +147,44 @@ public class Buildingpoint : MonoBehaviour
     							mBuildSelection = "";
     						}
                         }
+						else
+						{
+							GameObject instructionUI = GameObject.Find("Instructions");
+							if (instructionUI != null)
+							{
+								instructionUI.GetComponent<MenuNotifications>().SetText("Unable to build this.");
+							}
+						}
 					}
-				}
+				}					
 				else
 				{
-					mPrefabType = (int)PrefabManager.PrefabType.INVALID;
-
-					// Reset the clicked state, to hide this GUI.
-					clickComponent.SetIsClicked(false);
+                	clickComponent.Unclick();
+					GameObject instructionUI = GameObject.Find("Instructions");
+					if (instructionUI != null)
+					{
+						instructionUI.GetComponent<MenuNotifications>().SetText("BUILDINGPOINT:\nNo items found for type: " + (PrefabManager.PrefabType)mPrefabType);
+					}
 				}
-			}
-		}
+            }
+        }
+    }
+    
+    void OnClick()
+    {
+		mIsClicked = true;
 	}
-
 	void OnUnclicked()
 	{
+		mIsClicked = false;
+		if (!mIsReadyToBuild && mPrefabType != (int)PrefabManager.PrefabType.INVALID)
+		{
+			mPrefabType = (int)PrefabManager.PrefabType.INVALID;
+		}
+	}
+	void OnExitClicked()
+	{
+		mIsClicked = false;
 		if (!mIsReadyToBuild && mPrefabType != (int)PrefabManager.PrefabType.INVALID)
 		{
 			mPrefabType = (int)PrefabManager.PrefabType.INVALID;
@@ -164,10 +198,11 @@ public class Buildingpoint : MonoBehaviour
 
 		// Instantiate the new building.
 		mBuilding = mPrefabManager.Spawn(mBuildSelection, transform.position, Quaternion.identity);
-		mBuildSelection = "";
 
 		Buildable buildComponent = mBuilding.GetComponent<Buildable>();
-		buildComponent.StartBuilding(mBuilder);
+		buildComponent.StartBuilding(mBuilder, mBuildSelection);
+
+		mBuildSelection = "";
 
 		// Hide the building point and disable its Clickable component.
 		this.renderer.enabled = false;

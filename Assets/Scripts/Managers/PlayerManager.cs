@@ -7,7 +7,30 @@ public class PlayerManager : MonoBehaviour
 
 	private GameObject mActivePlayer = null;
 	public GameObject GetActivePlayer() { return mActivePlayer; }
-	public void SetActivePlayer(GameObject player) { mActivePlayer = player; }
+	public void SetActivePlayer(GameObject player)
+	{
+		if (player != null)
+		{
+			if (mActivePlayer != null)
+			{
+				Debug.Log("PLAYERMANAGER: SetActivePlayer to " + player.name + " (from: " + mActivePlayer.name + ")");
+			}
+			else
+			{
+				Debug.Log("PLAYERMANAGER: SetActivePlayer to " + player.name + " (from: NULL)");
+			}
+		}
+		else if (mActivePlayer != null)
+		{
+			Debug.Log("PLAYERMANAGER: SetActivePlayer to NULL (from: " + mActivePlayer.name + ")");
+		}
+		else
+		{
+			Debug.Log("PLAYERMANAGER: SetActivePlayer to NULL (from: NULL)");
+		}
+
+		mActivePlayer = player;
+	}
 
 
 	void Start ()

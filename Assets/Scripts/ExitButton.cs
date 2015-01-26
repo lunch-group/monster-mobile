@@ -23,14 +23,14 @@ public class ExitButton : MonoBehaviour
 			Rect r = new Rect(0, 0, size, size);
 			if (GUI.Button(r, "X"))
 			{
-				Debug.Log("ExitButton clicked.");
-
 				// Close all clickable GUIs.
 				Clickable[] clickableList = FindObjectsOfType(typeof(Clickable)) as Clickable[];
 				foreach (Clickable c in clickableList)
 				{
-					c.Unclick();
+					c.ExitButtonClicked();
 				}
+
+				Debug.Log("ExitButton clicked.");
 			}
 		}
 	}

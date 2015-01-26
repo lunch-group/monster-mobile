@@ -3,36 +3,41 @@ using System.Collections;
 
 public class Clickable : MonoBehaviour
 {
-	bool mIsClicked = false;
-	public bool IsClicked()
-	{
-		return mIsClicked;
-	}
-	public void SetIsClicked(bool c)
-	{
-		mIsClicked = c;
-	}
+	public bool IsClicked = false;
+
 
 	public void Unclick()
 	{
-		mIsClicked = false;
+		IsClicked = false;
         transform.SendMessage("OnUnclicked", SendMessageOptions.DontRequireReceiver);
+		transform.parent.SendMessage("OnUnclicked", SendMessageOptions.DontRequireReceiver);
 		transform.root.SendMessage("OnUnclicked", SendMessageOptions.DontRequireReceiver);
+	}
+
+	public void ExitButtonClicked()
+	{
+		IsClicked = false;
+		transform.SendMessage("OnExitClicked", SendMessageOptions.DontRequireReceiver);
+		transform.parent.SendMessage("OnExitClicked", SendMessageOptions.DontRequireReceiver);
+		transform.root.SendMessage("OnExitClicked", SendMessageOptions.DontRequireReceiver);
 	}
 	
 	public void OnMouseUpAsButton()
 	{		
-		// Close all other clickables' GUIs.
+		// Unclick all other clickables.
 		Clickable[] clickableList = FindObjectsOfType(typeof(Clickable)) as Clickable[];
 		foreach (Clickable c in clickableList)
 		{
 			if (c != this)
 			{
-				c.SetIsClicked(false);
+				c.Unclick();
 			}
 		}
 
-		mIsClicked = true;
+		IsClicked = true;
+		transform.SendMessage("OnClick", SendMessageOptions.DontRequireReceiver);
+		transform.parent.SendMessage("OnClick", SendMessageOptions.DontRequireReceiver);
+		transform.root.SendMessage("OnClick", SendMessageOptions.DontRequireReceiver);
 
 		Debug.Log ("CLICKABLE: Clicked on " + this.name);
 	}

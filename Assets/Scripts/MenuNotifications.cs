@@ -6,7 +6,8 @@ public class MenuNotifications : MonoBehaviour
 {
 	public Vector2 SizeWidthHeight;
 	public float OffsetY = 10;
-	public Color color = Color.white;
+	public bool OffsetFromTop = true;
+	public Color TextColor = Color.white;
 	public GUISkin skin = null;
 	public float Timeout = 5.0f;
 	private float mTimeShown = 0.0f;
@@ -28,14 +29,16 @@ public class MenuNotifications : MonoBehaviour
 	
 	void OnGUI()
 	{
-		if (mTimeShown < Timeout)
+		if ((mTimeShown < Timeout) || (Timeout == -1.0f))
 		{
 			mTimeShown += Time.deltaTime;
 
 			if (mText != "")
 			{
-				Rect r = new Rect(Screen.width / 2 - SizeWidthHeight.x / 2, OffsetY, SizeWidthHeight.x, SizeWidthHeight.y);
-				GUI.contentColor = color;
+				GUI.contentColor = TextColor;
+
+				Rect r = new Rect(Screen.width / 2 - SizeWidthHeight.x / 2, 0, SizeWidthHeight.x, SizeWidthHeight.y);
+				r.y = (OffsetFromTop) ? OffsetY : (Screen.height - OffsetY);
 				
 				GUI.Box(r, mText);
 			}
