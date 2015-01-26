@@ -14,6 +14,14 @@ public class Clickable : MonoBehaviour
 		transform.root.SendMessage("OnUnclicked", SendMessageOptions.DontRequireReceiver);
 	}
 
+	public void Deselect()
+	{
+		IsClicked = false;
+		transform.SendMessage("OnDeselect", SendMessageOptions.DontRequireReceiver);
+		transform.parent.SendMessage("OnDeselect", SendMessageOptions.DontRequireReceiver);
+		transform.root.SendMessage("OnDeselect", SendMessageOptions.DontRequireReceiver);
+	}
+
 	public void ExitButtonClicked()
 	{
 		IsClicked = false;
@@ -30,7 +38,7 @@ public class Clickable : MonoBehaviour
 		{
 			if (c != this)
 			{
-				c.Unclick();
+				c.Deselect();
 			}
 		}
 
