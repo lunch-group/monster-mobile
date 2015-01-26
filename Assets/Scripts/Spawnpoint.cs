@@ -110,8 +110,8 @@ public class Spawnpoint : MonoBehaviour
 					mWaveTimeLeft = waveLength / (float)spawnsPerWave;
 
 					GameObject newEnemy = (GameObject)Instantiate(enemy, transform.position, Quaternion.identity);
-					NavMeshAgent nav = newEnemy.GetComponent<NavMeshAgent>();
-					nav.destination = destination.position;
+					Moveable mc = newEnemy.GetComponent<Moveable>();
+					mc.RequestMove(destination);
 				}
 			}
 		}

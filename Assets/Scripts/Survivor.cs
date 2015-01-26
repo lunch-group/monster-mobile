@@ -13,8 +13,9 @@ public class Survivor : MonoBehaviour
 		PATROL,
 		SPECIAL
 	};
-	protected SurvivorState mState;
 	private string[] mStateStrings = new string[] { "IDLE", "MOVE", "BUILD", "REPAIR", "PATROL", "SPECIAL" };
+	protected SurvivorState mState;
+	public SurvivorState GetState() { return mState; }
 
 	public enum SurvivorAttackType
 	{
@@ -23,9 +24,6 @@ public class Survivor : MonoBehaviour
 		RANGED
 	};
 	public SurvivorAttackType AttackType;
-
-	public GameObject instructionMenu = null;
-	private MenuNotifications mInstructionsMenu = null;
 
 	public int MaxHealth = 10;
 
@@ -39,9 +37,20 @@ public class Survivor : MonoBehaviour
 	private bool mIsPendingBuild = false;
 	private Buildingpoint mBuildingPoint = null;
 
+	// Repairing.
+	private bool mIsPendingRepair = false;
+	private Buildable mRepairPoint = null;
+
 	private PlayerManager mPlayerManager = null;
 
 	public int AttackRadius = 10;
+    
+    [Tooltip("List of building types this player can build.")]
+    public GameObject[] Buildables;
+
+	private bool mIsClicked = false;
+
+	public string PlayerName;
 
 
 	virtual protected void Start ()
@@ -55,10 +64,7 @@ public class Survivor : MonoBehaviour
 			}
 		}
 
-		if (instructionMenu != null)
-		{
-			mInstructionsMenu = instructionMenu.GetComponent<MenuNotifications>();
-		}
+		PlayerName = this.gameObject.name;
 
 		mState = SurvivorState.IDLE;
 	}
@@ -136,13 +142,10 @@ public class Survivor : MonoBehaviour
 				if (bpsReady.Count > 0)
 				{
 					mBuildingPoint = (bpsReady[0] as GameObject).GetComponent<Buildingpoint>();
-					mIsPendingBuild = false;
-					mDestination = mBuildingPoint.transform.position;
+					mBuildingPoint.SetPendingBuild();
+                    mIsPendingBuild = false;
 
-					// Offset to the nearest corner of the object.
-					mDestination.x += (transform.position.x > mDestination.x) ? 1.0f : -1.0f;
-					mDestination.y = transform.position.y;
-					mDestination.z += (transform.position.z > mDestination.z) ? 1.0f : -1.0f;
+					mDestination = GetNearestCorner(mBuildingPoint.transform.position);
 
 					mPlayerManager.SetActivePlayer(null);
 				}
@@ -159,6 +162,36 @@ public class Survivor : MonoBehaviour
 			break;
 		
 		case SurvivorState.REPAIR:
+		{
+			if (mIsPendingRepair)
+			{
+				GameObject[] bgos = GameObject.FindGameObjectsWithTag("Building");
+				foreach (GameObject bgo in bgos)
+				{
+					Buildable bc = bgo.GetComponent<Buildable>();
+					if (bc && bc.Repairable)
+					{
+						if (bc.IsReadyToRepair())
+						{
+							mIsPendingRepair = false;
+							mRepairPoint = bc;
+							mDestination = GetNearestCorner(mRepairPoint.transform.position);
+						}
+					}
+				}
+			}
+			else
+			{
+				MoveToDestination();
+				if (transform.position.Equals(mDestination))
+				{
+					mRepairPoint.Repair();
+					mRepairPoint = null;
+
+					SetState(SurvivorState.IDLE);
+				}
+			}
+		}
 			break;
 		
 		case SurvivorState.PATROL:
@@ -202,6 +235,18 @@ public class Survivor : MonoBehaviour
 		return closest;
 	}
 
+	// Offset to the nearest corner of the object.
+	Vector3 GetNearestCorner(Vector3 dest)
+	{
+		Vector3 result = dest;
+
+		result.x += (transform.position.x > result.x) ? 1.0f : -1.0f;
+		result.y = transform.position.y;
+		result.z += (transform.position.z > result.z) ? 1.0f : -1.0f;
+
+		return result;
+	}
+
 	virtual protected void OnGUI()
 	{
 		// Don't allow updates in certain states.
@@ -210,36 +255,62 @@ public class Survivor : MonoBehaviour
 			return;
 		}
 
-		// Check all body parts for a Clickable component.
-		Clickable[] clickers = GetComponentsInChildren<Clickable>() as Clickable[];
-		foreach (Clickable c in clickers)
+		if (mIsClicked)
 		{
-			if (c.IsClicked())
+			GUI.contentColor = Color.yellow;
+
+			// Get GUI coordinates from 3D position on screen.
+			Vector3 v = Camera.main.WorldToScreenPoint(transform.position);
+			v = new Vector2(v.x, Screen.height - v.y);
+
+			int gridColumns = 2;
+			Vector2 rectSize = new Vector2(150, 30 * mStateStrings.Length / gridColumns);
+			Rect r = new Rect(v.x - rectSize.x/2, v.y, rectSize.x, rectSize.y);
+
+			int selection = -1;
+			selection = GUI.SelectionGrid(r, selection, mStateStrings, gridColumns);
+			if (selection >= 0)
 			{
-				GUI.contentColor = Color.yellow;
+				mPlayerManager.SetActivePlayer(gameObject);
+				SetState((SurvivorState)selection);
 
-				// Get GUI coordinates from 3D position on screen.
-				Vector3 v = Camera.main.WorldToScreenPoint(transform.position);
-				v = new Vector2(v.x, Screen.height - v.y);
-
-				int gridColumns = 2;
-				Vector2 rectSize = new Vector2(150, 30 * mStateStrings.Length / gridColumns);
-				Rect r = new Rect(v.x - rectSize.x/2, v.y, rectSize.x, rectSize.y);
-
-				int selection = -1;
-				selection = GUI.SelectionGrid(r, selection, mStateStrings, gridColumns);
-				if (selection >= 0)
+				// Unclick this player.
+				mIsClicked = false;
+				Clickable[] clickers = GetComponentsInChildren<Clickable>() as Clickable[];
+				foreach (Clickable cc in clickers)
 				{
-					mPlayerManager.SetActivePlayer(gameObject);
-					SetState((SurvivorState)selection);
-					c.SetIsClicked(false);
+					cc.IsClicked = false;
 				}
 			}
 		}
 	}
 
+	void OnClick()
+	{
+		mIsClicked = true;
+
+		GameObject selectionUI = GameObject.Find("SelectionText");
+		if (selectionUI != null)
+		{
+			string s = PlayerName + "\n";
+
+			Health hc = GetComponent<Health>();
+			if (hc != null)
+			{
+				s += "Health: " + hc.CurrentHealth + "/" + hc.MaxHealth;
+			}
+			
+			selectionUI.GetComponent<MenuNotifications>().SetText(s);
+		}
+	}
 	void OnUnclicked()
 	{
+		mIsClicked = false;
+	}
+	void OnExitClicked()
+	{
+		mIsClicked = false;
+
 		if (mState == SurvivorState.MOVE && mIsPendingMove)
 		{
 			mIsPendingMove = false;
@@ -249,6 +320,12 @@ public class Survivor : MonoBehaviour
 		if (mState == SurvivorState.BUILD && mIsPendingBuild)
 		{
 			mIsPendingBuild = false;
+			SetState(SurvivorState.IDLE);
+			mPlayerManager.SetActivePlayer(null);
+		}
+		else if (mState == SurvivorState.REPAIR && mIsPendingRepair)
+		{
+			mIsPendingRepair = false;
 			SetState(SurvivorState.IDLE);
 			mPlayerManager.SetActivePlayer(null);
 		}
@@ -270,10 +347,12 @@ public class Survivor : MonoBehaviour
 		switch (state)
 		{
 		case SurvivorState.IDLE:
+			mPlayerManager.SetActivePlayer(null);
 			break;
 
 		case SurvivorState.MOVE:
 			mIsPendingBuild = false;
+			mIsPendingRepair = false;
 
 			// Forget the last destination.
 			mIsMoving = false;
@@ -301,9 +380,20 @@ public class Survivor : MonoBehaviour
 			}
 			break;
 		
-		case SurvivorState.REPAIR:	// fall through
+		case SurvivorState.REPAIR:
+		{
+			mIsPendingMove = false;
+			mIsMoving = false;
+			mIsPendingBuild = false;
+
+			mIsPendingRepair = true;
+			s = "Click on a Building\nto repair it.";
+		}
+			break;
+
 		case SurvivorState.PATROL:	// fall through
         case SurvivorState.SPECIAL:
+			mPlayerManager.SetActivePlayer(null);
 			state = SurvivorState.IDLE;
 			s = "State not implemented.";
 			break;
@@ -313,9 +403,10 @@ public class Survivor : MonoBehaviour
 			break;
 		}
 
-		if (mInstructionsMenu != null)
+		GameObject instructionUI = GameObject.Find("Instructions");
+		if (instructionUI != null)
 		{
-			mInstructionsMenu.SetText(s);
+			instructionUI.GetComponent<MenuNotifications>().SetText(s);
 		}
 
 		mState = state;

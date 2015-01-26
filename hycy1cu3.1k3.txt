@@ -1,0 +1,170 @@
+﻿Merge remote-tracking branch 'origin/master'
+
+Conflicts:
+	Assets/scene_prototype.unity
+	Assets/scene_prototype_2.unity
+#
+# It looks like you may be committing a merge.
+# If this is not correct, please remove the file
+#	.git/MERGE_HEAD
+# and try again.
+
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+# Your branch and 'origin/master' have diverged,
+# and have 1 and 29 different commits each, respectively.
+#   (use "git pull" to merge the remote branch into yours)
+#
+# All conflicts fixed but you are still merging.
+#
+# Changes to be committed:
+#	new file:   ArtAssets/Animation/monster_animation.fbx
+#	new file:   ArtAssets/Animation/survivor_animation.fbx
+#	new file:   ArtAssets/Character/monster_zombie.ma
+#	renamed:    ArtAssets/monster.ma -> ArtAssets/Character/survivor_ranger.ma
+#	new file:   ArtAssets/Character/work/.mayaSwatches/monster.ma.swatches
+#	new file:   ArtAssets/Character/work/.mayaSwatches/monster_zombie_02_06_02.ma.swatches
+#	new file:   ArtAssets/Character/work/.mayaSwatches/survivor.ma.swatches
+#	new file:   ArtAssets/Character/work/.mayaSwatches/survivor_ranger.ma.swatches
+#	new file:   ArtAssets/Character/work/.mayaSwatches/survivor_ranger_02_06_02.ma.swatches
+#	new file:   ArtAssets/Character/work/monster_zombie_model_02_06_02.ma
+#	new file:   ArtAssets/Character/work/monster_zombie_skinned.ma
+#	new file:   ArtAssets/Character/work/survivor_ranger_model_02_06_02.ma
+#	renamed:    ArtAssets/survivor.ma -> ArtAssets/Character/work/survivor_ranger_skinned.ma
+#	new file:   ArtAssets/Environment/.mayaSwatches/house_corner_05_10_05.ma.swatches
+#	new file:   ArtAssets/Environment/.mayaSwatches/house_wall_full_10_10_01.ma.swatches
+#	new file:   ArtAssets/Environment/.mayaSwatches/house_wall_small_05_10_01.ma.swatches
+#	new file:   ArtAssets/Environment/.mayaSwatches/house_window_10_10_01.ma.swatches
+#	new file:   ArtAssets/Environment/.mayaSwatches/outdoor_fence_half_04_05_01.ma.swatches
+#	new file:   ArtAssets/Environment/house_corner_05_10_05.ma
+#	renamed:    ArtAssets/Environment/house_door.ma -> ArtAssets/Environment/house_door_10_10_01.ma
+#	new file:   ArtAssets/Environment/house_wall_full_10_10_01.ma
+#	new file:   ArtAssets/Environment/house_wall_half_05_10_01.ma
+#	new file:   ArtAssets/Environment/house_window_10_10_01.ma
+#	renamed:    ArtAssets/Environment/wall.ma -> ArtAssets/Environment/outdoor_fence_full_06_03_01.ma
+#	deleted:    ArtAssets/monster.mb
+#	new file:   ArtAssets/skeleton.ma
+#	deleted:    ArtAssets/survivor.mb
+#	deleted:    Assembly-CSharp-vs.csproj
+#	deleted:    Assembly-CSharp.csproj
+#	renamed:    Assets/BUILDINGS.meta -> Assets/Animator.meta
+#	new file:   Assets/Animator/Survivor_Animator.controller
+#	renamed:    Assets/_Materials/blue.mat.meta -> Assets/Animator/Survivor_Animator.controller.meta
+#	new file:   Assets/Animator/monster_animator.controller
+#	renamed:    Assets/_Materials/orange.mat.meta -> Assets/Animator/monster_animator.controller.meta
+#	renamed:    Assets/scene_prototype_2.meta -> Assets/ArtAssets/Animation.meta
+#	renamed:    Assets/ArtAssets/Character/survivor_animation.bck.meta -> Assets/ArtAssets/Animation/Materials.meta
+#	renamed:    Assets/_Materials/orange.mat -> Assets/ArtAssets/Animation/Materials/lambert5.mat
+#	new file:   Assets/ArtAssets/Animation/Materials/lambert5.mat.meta
+#	renamed:    Assets/_Materials/blue.mat -> Assets/ArtAssets/Animation/Materials/lambert6.mat
+#	new file:   Assets/ArtAssets/Animation/Materials/lambert6.mat.meta
+#	new file:   Assets/ArtAssets/Animation/monster_animation.fbx
+#	new file:   Assets/ArtAssets/Animation/monster_animation.fbx.meta
+#	new file:   Assets/ArtAssets/Animation/survivor_animation.fbx
+#	new file:   Assets/ArtAssets/Animation/survivor_animation.fbx.meta
+#	new file:   Assets/ArtAssets/Character/.mayaSwatches/monster_zombie.ma.swatches
+#	new file:   Assets/ArtAssets/Character/Materials.meta
+#	new file:   Assets/ArtAssets/Character/Materials/lambert3.mat
+#	new file:   Assets/ArtAssets/Character/Materials/lambert3.mat.meta
+#	new file:   Assets/ArtAssets/Character/Materials/lambert4.mat
+#	new file:   Assets/ArtAssets/Character/Materials/lambert4.mat.meta
+#	new file:   Assets/ArtAssets/Character/Materials/lambert5.mat
+#	new file:   Assets/ArtAssets/Character/Materials/lambert5.mat.meta
+#	new file:   Assets/ArtAssets/Character/Materials/lambert6.mat
+#	new file:   Assets/ArtAssets/Character/Materials/lambert6.mat.meta
+#	new file:   Assets/ArtAssets/Character/monster_zombie.ma
+#	new file:   Assets/ArtAssets/Character/monster_zombie.ma.meta
+#	new file:   Assets/ArtAssets/Character/survivor_ranger.ma
+#	new file:   Assets/ArtAssets/Character/survivor_ranger.ma.meta
+#	new file:   Assets/ArtAssets/Environment.meta
+#	new file:   Assets/ArtAssets/Environment/Materials.meta
+#	new file:   Assets/ArtAssets/Environment/Materials/Exterior.mat
+#	new file:   Assets/ArtAssets/Environment/Materials/Exterior.mat.meta
+#	new file:   Assets/ArtAssets/Environment/Materials/Interior.mat
+#	new file:   Assets/ArtAssets/Environment/Materials/Interior.mat.meta
+#	new file:   Assets/ArtAssets/Environment/house_corner_05_10_05.fbx
+#	new file:   Assets/ArtAssets/Environment/house_corner_05_10_05.fbx.meta
+#	new file:   Assets/ArtAssets/Environment/house_door_10_10_01.fbx
+#	new file:   Assets/ArtAssets/Environment/house_door_10_10_01.fbx.meta
+#	new file:   Assets/ArtAssets/Environment/house_wall_full_10_10_01.fbx
+#	new file:   Assets/ArtAssets/Environment/house_wall_full_10_10_01.fbx.meta
+#	modified:   Assets/Gizmos.meta
+#	modified:   Assets/Gizmos/brush_0.png.meta
+#	modified:   Assets/Gizmos/brush_1.png.meta
+#	modified:   Assets/Gizmos/brush_10.png.meta
+#	modified:   Assets/Gizmos/brush_11.png.meta
+#	modified:   Assets/Gizmos/brush_12.png.meta
+#	modified:   Assets/Gizmos/brush_13.png.meta
+#	modified:   Assets/Gizmos/brush_14.png.meta
+#	modified:   Assets/Gizmos/brush_15.png.meta
+#	modified:   Assets/Gizmos/brush_16.png.meta
+#	modified:   Assets/Gizmos/brush_17.png.meta
+#	modified:   Assets/Gizmos/brush_18.png.meta
+#	modified:   Assets/Gizmos/brush_19.png.meta
+#	modified:   Assets/Gizmos/brush_2.png.meta
+#	modified:   Assets/Gizmos/brush_3.png.meta
+#	modified:   Assets/Gizmos/brush_4.png.meta
+#	modified:   Assets/Gizmos/brush_5.png.meta
+#	modified:   Assets/Gizmos/brush_6.png.meta
+#	modified:   Assets/Gizmos/brush_7.png.meta
+#	modified:   Assets/Gizmos/brush_8.png.meta
+#	modified:   Assets/Gizmos/brush_9.png.meta
+#	modified:   Assets/New Terrain 1.asset
+#	modified:   Assets/New Terrain 1.asset.meta
+#	modified:   Assets/New Terrain.asset
+#	modified:   Assets/New Terrain.asset.meta
+#	modified:   Assets/Resources.meta
+#	renamed:    Assets/Resources/PREFABS/Buildings.meta -> Assets/Resources/Buildings.meta
+#	renamed:    Assets/Resources/PREFABS/Buildings/SecuritySystem.prefab -> Assets/Resources/Buildings/SecuritySystem.prefab
+#	renamed:    Assets/Resources/PREFABS/Buildings/SecuritySystem.prefab.meta -> Assets/Resources/Buildings/SecuritySystem.prefab.meta
+#	renamed:    Assets/Resources/PREFABS/Buildings/SniperTower.prefab -> Assets/Resources/Buildings/SniperTower.prefab
+#	renamed:    Assets/Resources/PREFABS/Buildings/SniperTower.prefab.meta -> Assets/Resources/Buildings/SniperTower.prefab.meta
+#	modified:   Assets/Resources/PREFABS/Buildingpoint.prefab
+#	new file:   Assets/Resources/PREFABS/ParticleExplosion 1.prefab
+#	new file:   Assets/Resources/PREFABS/ParticleExplosion 1.prefab.meta
+#	modified:   Assets/Resources/PREFABS/Survivor.prefab
+#	new file:   Assets/Resources/PREFABS/SurvivorEngineer.prefab
+#	new file:   Assets/Resources/PREFABS/SurvivorEngineer.prefab.meta
+#	modified:   Assets/Resources/PREFABS/SurvivorHunter.prefab
+#	modified:   Assets/Resources/PREFABS/TeddyPrefab.prefab
+#	modified:   Assets/Scripts/Buildable.cs
+#	modified:   Assets/Scripts/Buildingpoint.cs
+#	modified:   Assets/Scripts/Buildings/SecuritySystem.cs
+#	modified:   Assets/Scripts/Buildings/SniperTower.cs
+#	modified:   Assets/Scripts/Clickable.cs
+#	modified:   Assets/Scripts/Defensepoint.cs
+#	modified:   Assets/Scripts/Enemy.cs
+#	modified:   Assets/Scripts/ExitButton.cs
+#	new file:   Assets/Scripts/Explodable.cs
+#	new file:   Assets/Scripts/Explodable.cs.meta
+#	new file:   Assets/Scripts/Health.cs
+#	new file:   Assets/Scripts/Health.cs.meta
+#	modified:   Assets/Scripts/Managers/PlayerManager.cs
+#	modified:   Assets/Scripts/Managers/PrefabManager.cs
+#	modified:   Assets/Scripts/MenuNotifications.cs
+#	new file:   Assets/Scripts/Moveable.cs
+#	new file:   Assets/Scripts/Moveable.cs.meta
+#	modified:   Assets/Scripts/Spawnpoint.cs
+#	modified:   Assets/Scripts/Survivor.cs
+#	new file:   Assets/Scripts/SurvivorEngineer.cs
+#	new file:   Assets/Scripts/SurvivorEngineer.cs.meta
+#	modified:   Assets/_Materials/red.mat
+#	new file:   Assets/scene_character.unity
+#	new file:   Assets/scene_character.unity.meta
+#	new file:   Assets/scene_level.unity
+#	new file:   Assets/scene_level.unity.meta
+#	modified:   Assets/scene_main.unity
+#	modified:   Assets/scene_main/NavMesh.asset
+#	new file:   Assets/scene_prototype-jay.unity
+#	new file:   Assets/scene_prototype-jay.unity.meta
+#	modified:   Assets/scene_prototype.meta
+#	renamed:    Assets/scene_prototype_2/NavMesh.asset -> Assets/scene_prototype/NavMesh.asset
+#	modified:   Assets/scene_prototype/NavMesh.asset.meta
+#	deleted:    Assets/scene_prototype_2/NavMesh.asset.meta
+#	deleted:    UnityPlayer_Symbols.pdb
+#	deleted:    monster-mobile-csharp.v12.suo
+#	deleted:    monster-mobile.userprefs
+#
+
