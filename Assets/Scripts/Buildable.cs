@@ -15,8 +15,8 @@ public class Buildable : MonoBehaviour
 
 	public bool Repairable = true;
 
-	private bool mShowGui;
-	public void ShowGui(bool s) { mShowGui = s; }
+	private bool mShowBuildGui;
+	public void ShowBuildGui(bool s) { mShowBuildGui = s; }
 
 	public Material BuildingMaterial = null;
 	public Material BuildingMaterialDone = null;
@@ -40,7 +40,7 @@ public class Buildable : MonoBehaviour
 			mTimeLeft = 0.0f;
 			mIsDone = true;
 			mIsBuilding = false;
-			mShowGui = false;
+			mShowBuildGui = false;
 			mName = gameObject.name;
 		}
 		else
@@ -79,7 +79,7 @@ public class Buildable : MonoBehaviour
 	{
 		if (mIsBuilding)
 		{
-			mShowGui = true;
+			mShowBuildGui = true;
 
 			mTimeLeft -= Time.deltaTime;
 			if (mTimeLeft <= 0.0f)
@@ -87,7 +87,7 @@ public class Buildable : MonoBehaviour
 				mTimeLeft = 0.0f;
 				mIsDone = true;
 				mIsBuilding = false;
-				mShowGui = false;
+				mShowBuildGui = false;
 
 				//BuildText.renderer.enabled = false;
 				Debug.Log ("Finished building " + this.name);
@@ -131,7 +131,7 @@ public class Buildable : MonoBehaviour
 
 	protected void OnGUI ()
 	{
-		if (mShowGui)
+		if (mShowBuildGui)
 		{
 			TextMesh tm = GetComponentInChildren<TextMesh>();
 			tm.text = "Building: " + (int)(100*(1-(mTimeLeft/mActualTimeToBuild))) + "%" +
@@ -155,8 +155,6 @@ public class Buildable : MonoBehaviour
             else
             {
                 bool canRepair = false;
-                PrefabManager prefabMan = GameObject.Find("PrefabManager").GetComponent<PrefabManager>();
-				string[] buildingTypes = prefabMan.GetPrefabNamesByType((int)PrefabManager.PrefabType.BUILDING);
 				Survivor playerComp = pm.GetComponent<PlayerManager>().GetActivePlayer().GetComponent<Survivor>();
 				foreach (GameObject bgo in playerComp.Buildables)
 				{
@@ -197,7 +195,7 @@ public class Buildable : MonoBehaviour
 							Clickable[] clickComponents = GetComponentsInChildren<Clickable>();
 							foreach (Clickable cc in clickComponents)
                             {
-                                cc.Unclick();
+                                cc.Deselect();
                             }
 						}
 							break;
@@ -207,8 +205,8 @@ public class Buildable : MonoBehaviour
 							Clickable[] clickComponents = GetComponentsInChildren<Clickable>();
 							foreach (Clickable cc in clickComponents)
                             {
-                                cc.Unclick();
-                            }
+								cc.Deselect();
+							}
 							Destroy(gameObject);
 						}
 							break;
@@ -226,8 +224,8 @@ public class Buildable : MonoBehaviour
 							Clickable[] clickComponents = GetComponentsInChildren<Clickable>();
 							foreach (Clickable cc in clickComponents)
                             {
-                                cc.Unclick();
-                            }
+								cc.Deselect();
+							}
 
 							Destroy(gameObject);
 						}
@@ -265,7 +263,7 @@ public class Buildable : MonoBehaviour
 	{
 		mIsSelected = true;
 	}
-	void OnUnclicked()
+	void OnDeselect()
 	{
 		mIsSelected = false;
 

@@ -3,48 +3,56 @@ using System.Collections;
 
 public class Menu : MonoBehaviour
 {
-	public GUISkin skin = null;
+	public TextAlignment Alignment = TextAlignment.Center;
+	public float OffsetX = 0.0f;
+	public float OffsetY = 0.0f;
+	public float ButtonWidth = 300.0f;
+	public float ButtonHeight = 30.0f;
+	public float LogoScale = 1.0f;
+
+	public string SceneName = "scene_main";
 	
-	public float widthPercent = 0.5f;
-	public float heightPercent = 0.5f;
-	
-	public Texture2D logo = null;
+	public Texture2D Logo = null;
 	
 	void OnGUI()
 	{
-		GUI.skin = skin;
-		
-		// calculate the menu rect first (its needed in the logo)
-		Rect r = new Rect(Screen.width * (1 - widthPercent) / 2,
-		                  Screen.height * (1 - heightPercent) / 2,
-		                  Screen.width * widthPercent,
-		                  Screen.height * heightPercent); 
-		
-		// draw logo, centered at the top right of the menu
-		if (logo != null)
+		Rect r;
+
+		switch (Alignment)
 		{
-			Rect l = new Rect(r.x + r.width - logo.width / 2,
-			                  r.y - logo.height / 2,
-			                  logo.width,
-			                  logo.height);
-			GUI.DrawTexture(l, logo);
+		case TextAlignment.Left:
+			r = new Rect(OffsetX, OffsetY, ButtonWidth, ButtonHeight);
+			break;
+
+		case TextAlignment.Right:
+			r = new Rect(Screen.width - OffsetX, OffsetY, ButtonWidth, ButtonHeight);
+			break;
+
+		case TextAlignment.Center: // fall through
+		default:
+			r = new Rect(Screen.width / 2 - (ButtonWidth / 2), Screen.height / 2 - (ButtonHeight / 2), ButtonWidth, ButtonHeight);
+			break;
+		}
+
+		
+		// draw logo at the top right of the menu
+		if (Logo != null)
+		{
+			Rect l = new Rect(Screen.width / 2.0f - Logo.width * (LogoScale/2.0f), OffsetY + Logo.height * (LogoScale/2.0f),
+			                  Logo.width*LogoScale, Logo.height*LogoScale);
+			GUI.DrawTexture(l, Logo);
 		}
 		
 		// draw the menu
-		GUILayout.BeginArea(r);
-		GUILayout.BeginVertical("box");   
-		
-		if (GUILayout.Button ("Play"))
+		if (GUI.Button(r, "Play"))
 		{
-			Application.LoadLevel("scene_main");
+			Application.LoadLevel(SceneName);
 		}
-		
-		if (GUILayout.Button("Quit"))
+
+		r.y += ButtonHeight;
+		if (GUI.Button(r, "Quit"))
 		{
 			Application.Quit();
 		}
-		
-		GUILayout.EndVertical();        
-		GUILayout.EndArea();       
 	}
 }

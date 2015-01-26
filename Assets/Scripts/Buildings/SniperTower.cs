@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class SniperTower : MonoBehaviour
@@ -45,7 +45,7 @@ public class SniperTower : MonoBehaviour
 		}
 		else if (buildComp.IsBuilding())
 		{
-			buildComp.ShowGui(true);
+			buildComp.ShowBuildGui(true);
 		}
 	}
 

@@ -109,7 +109,7 @@ public class Survivor : MonoBehaviour
 							mIsMoving = true;
 
 							// Set this player as inactive to prevent being able to build while moving.
-							mPlayerManager.SetActivePlayer(null);
+							mPlayerManager.DeactivatePlayer(gameObject);
 						}
 					}
 					else
@@ -147,7 +147,7 @@ public class Survivor : MonoBehaviour
 
 					mDestination = GetNearestCorner(mBuildingPoint.transform.position);
 
-					mPlayerManager.SetActivePlayer(null);
+					mPlayerManager.DeactivatePlayer(gameObject);
 				}
 			}
 			else
@@ -307,6 +307,10 @@ public class Survivor : MonoBehaviour
 	{
 		mIsClicked = false;
 	}
+	void OnDeselect()
+	{
+		mIsClicked = false;
+	}
 	void OnExitClicked()
 	{
 		mIsClicked = false;
@@ -315,19 +319,19 @@ public class Survivor : MonoBehaviour
 		{
 			mIsPendingMove = false;
 			SetState(SurvivorState.IDLE);
-			mPlayerManager.SetActivePlayer(null);
+			mPlayerManager.DeactivatePlayer(gameObject);
 		}
 		if (mState == SurvivorState.BUILD && mIsPendingBuild)
 		{
 			mIsPendingBuild = false;
 			SetState(SurvivorState.IDLE);
-			mPlayerManager.SetActivePlayer(null);
+			mPlayerManager.DeactivatePlayer(gameObject);
 		}
 		else if (mState == SurvivorState.REPAIR && mIsPendingRepair)
 		{
 			mIsPendingRepair = false;
 			SetState(SurvivorState.IDLE);
-			mPlayerManager.SetActivePlayer(null);
+			mPlayerManager.DeactivatePlayer(gameObject);
 		}
 	}
 
@@ -347,7 +351,7 @@ public class Survivor : MonoBehaviour
 		switch (state)
 		{
 		case SurvivorState.IDLE:
-			mPlayerManager.SetActivePlayer(null);
+			mPlayerManager.DeactivatePlayer(gameObject);
 			break;
 
 		case SurvivorState.MOVE:
@@ -393,7 +397,7 @@ public class Survivor : MonoBehaviour
 
 		case SurvivorState.PATROL:	// fall through
         case SurvivorState.SPECIAL:
-			mPlayerManager.SetActivePlayer(null);
+			mPlayerManager.DeactivatePlayer(gameObject);
 			state = SurvivorState.IDLE;
 			s = "State not implemented.";
 			break;

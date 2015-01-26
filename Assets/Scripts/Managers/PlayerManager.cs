@@ -32,6 +32,18 @@ public class PlayerManager : MonoBehaviour
 		mActivePlayer = player;
 	}
 
+	// Call this to remove active players, otherwise they may overwrite another that requested to be active.
+	public void DeactivatePlayer(GameObject player)
+	{
+		if (player != null)
+		{
+			if (mActivePlayer == player)
+			{
+				Debug.Log("PLAYERMANAGER: DeactivatePlayer: " + player.name);
+				mActivePlayer = null;
+			}
+		}
+	}
 
 	void Start ()
 	{
